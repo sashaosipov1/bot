@@ -120,6 +120,10 @@ bot.on('callback_query', async msg => {
                 headers: { 'content-type': 'application/json', 'Authorization': tokenAdlook }
             },
             function(err, response, body) {
+                if (!response) {
+                    return;
+                }
+                
                 var startId = response.headers.location.lastIndexOf("/");
                 var tagId = response.headers.location.substring(startId + 1);
                 vastId = tagId;
@@ -184,6 +188,10 @@ bot.on('callback_query', async msg => {
                 headers: { 'content-type': 'application/json', 'Authorization': tokenAdlook }
             },
             function(err, response, body) {
+                if (!response) {
+                    return;
+                }
+                
                 var startId = response.headers.location.lastIndexOf("/");
                 var tagId = response.headers.location.substring(startId + 1);
                 flyId = tagId;
@@ -208,6 +216,10 @@ bot.on('callback_query', async msg => {
                 headers: { 'content-type': 'application/json', 'Authorization': tokenAdlook }
             },
             function(err, response, body) {
+                if (!response) {
+                    return;
+                }
+
                 var startId = response.headers.location.lastIndexOf("/");
                 var tagId = response.headers.location.substring(startId + 1);
                 ibvId = tagId;
