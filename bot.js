@@ -411,7 +411,7 @@ https://ads.adlook.me/vast?id=${vastId}`
                                     <p>Thank you for registering to AdLook SSP, the power of mobile automation.</p>
                                     <p>Here are your login details:</p>
                                     <p class="alt">
-                                        <strong>Url:</strong> <a href="http://dash.adlook.me/">dash.adlook.me</a><br>
+                                        <strong>Url:</strong> <a href="https://dash.adlook.me/">dash.adlook.me</a><br>
                                         <strong>Login:</strong> ${email}<br>
                                         <strong>Password:</strong> ${pass}<br>
                                     </p>
@@ -468,6 +468,9 @@ https://ads.adlook.me/vast?id=${vastId}`
                         },
                         function(err, response, body) {
                             // console.log('err reg ', err);
+                            if (!response) {
+                                return;
+                            }
                             var startId = response.headers.location.lastIndexOf("/");
                             var userId = response.headers.location.substring(startId + 1);
                             if (!err && userId) {
