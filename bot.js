@@ -13,6 +13,7 @@ const options = {
     inline_keyboard: [
         [{ text: 'FLY', callback_data: 'fly' }, { text: 'IBV', callback_data: 'ibv' }],
         [{ text: 'VAST', callback_data: 'vast' }, { text: 'OVERLAY', callback_data: 'overlay' }],
+        [{ text: 'Прикрепить к рулу', callback_data: `distribute` }],
         [{ text: 'Получить теги', callback_data: `receive` }],
     ]
 
@@ -32,6 +33,7 @@ var email;
 var vastId = '';
 var flyId = '';
 var ibvId = '';
+var lastId = '';
 var applicantId;
 
 var messageId;
@@ -114,19 +116,19 @@ bot.on('callback_query', async msg => {
         }
 
         request.post({
-                // registration new pub
                 url: 'http://api.adlook.me/public/tags',
                 body: JSON.stringify(paramsVast),
                 headers: { 'content-type': 'application/json', 'Authorization': tokenAdlook }
             },
             function(err, response, body) {
-                if (!response) {
+                if (!response.headers.location) {
                     return;
                 }
                 
                 var startId = response.headers.location.lastIndexOf("/");
                 var tagId = response.headers.location.substring(startId + 1);
                 vastId = tagId;
+                lastId = vastId;
                 var t = msg.message.text.replace("VAST:", `VAST: ${vastId}`);
                 request.put({
                         // put frame
@@ -182,19 +184,19 @@ bot.on('callback_query', async msg => {
         }
 
         request.post({
-                // registration new pub
                 url: 'http://api.adlook.me/public/tags',
                 body: JSON.stringify(paramsOutstream),
                 headers: { 'content-type': 'application/json', 'Authorization': tokenAdlook }
             },
             function(err, response, body) {
-                if (!response) {
+                if (!response.headers.location) {
                     return;
                 }
                 
                 var startId = response.headers.location.lastIndexOf("/");
                 var tagId = response.headers.location.substring(startId + 1);
                 flyId = tagId;
+                lastId = flyId;
                 var t = msg.message.text.replace("FLY:", `FLY: ${flyId}`);
                 sendReq("editMessageText", t);
             }
@@ -210,24 +212,27 @@ bot.on('callback_query', async msg => {
         }
 
         request.post({
-                // registration new pub
                 url: 'http://api.adlook.me/public/tags',
                 body: JSON.stringify(paramsOutstream),
                 headers: { 'content-type': 'application/json', 'Authorization': tokenAdlook }
             },
             function(err, response, body) {
-                if (!response) {
+                if (!response.headers.location) {
                     return;
                 }
 
                 var startId = response.headers.location.lastIndexOf("/");
                 var tagId = response.headers.location.substring(startId + 1);
                 ibvId = tagId;
+                lastId = ibvId;
                 var t = msg.message.text.replace("IBV:", `IBV: ${tagId}`);
                 sendReq("editMessageText", t);
             }
         );
     } else if (msg.data === 'receive') {
+        var one = msg.message.text.indexOf("Сайт: ") + 6;
+        var two = msg.message.text.indexOf("Имя: "); // +5
+        var siteTag = msg.message.text.substring(one, two - 1);
         mediaUserId = msg.from.id;
         const methods = 'sendMessage';
         const apiURL = `https://api.telegram.org/bot${token}/${methods}?`;
@@ -235,7 +240,7 @@ bot.on('callback_query', async msg => {
                 url: apiURL,
                 body: JSON.stringify({
                     'chat_id': mediaUserId,
-                    'text': `ТЕГИ
+                    'text': `ТЕГИ    ${siteTag}
 -------
 🔴 Fly Roll
 <!-- Paste next code to the place where in-read ad should appear -->
@@ -258,6 +263,19 @@ https://ads.adlook.me/vast?id=${vastId}`
 
             }
         )
+    } else if (msg.data === 'distribute') {
+        request.get({
+            // distribute tags
+            url: `http://api.adlook.me/public/tags/${lastId}/distribute`,
+            headers: { 'content-type': 'application/json', 'Authorization': tokenAdlook }
+        },
+        function(err, response, body) {
+            if (!err) {
+                var t = msg.message.text.replace(lastId, `${lastId} (подключен)`);
+                sendReq("editMessageText", t);
+            }
+        }
+    );
     } else {
         console.log(msg);
         jsMsg = JSON.parse(msg.data);
@@ -480,10 +498,10 @@ https://ads.adlook.me/vast?id=${vastId}`
                         },
                         function(err, response, body) {
                             // console.log('err reg ', err);
-                            if (!response) {
+                            if (!response.headers.location) {
                                 return;
                             }
-                            var startId = response.headers.location.lastIndexOf("/");
+                            var startId = response.headers.location.lastIndexOf("/"); // || null
                             var userId = response.headers.location.substring(startId + 1);
                             if (!err && userId) {
                                 sendReq('sendMessage', '', name, site, email);
