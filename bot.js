@@ -92,6 +92,10 @@ function gen_password(len) {
     return password;
 }
 
+bot.on("polling_error", err => {
+    console.log("Error: ", err.message)
+});
+
 bot.on('callback_query', async msg => {
     messageId = msg.message.message_id;
 
