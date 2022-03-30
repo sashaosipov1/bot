@@ -430,7 +430,7 @@ https://ads.adlook.me/vast?id=${vastId}`
                             </tr>
                             <tr>
                                 <td width="600" colspan="3" valign="top" align="center" cellpadding="10">
-                                    <h1>Welcome to ADlook SSP!</h1>
+                                    <h1>Welcome to ADlook.me SSP!</h1>
                                 </td>
                             </tr>
                             <tr>
@@ -438,7 +438,7 @@ https://ads.adlook.me/vast?id=${vastId}`
                             </tr>
                             <tr>
                                 <td width="600" colspan="3" cellpadding="0" cellspacing="0">
-                                    <p>Thank you for registering to ADlook SSP, the power of mobile automation.</p>
+                                    <p>Thank you for registering to ADlook.me SSP, the power of mobile automation.</p>
                                     <p>Here are your login details:</p>
                                     <p class="alt">
                                         <strong>Url:</strong> <a href="https://dash.adlook.me/">dash.adlook.me</a><br>
@@ -446,7 +446,7 @@ https://ads.adlook.me/vast?id=${vastId}`
                                         <strong>Password:</strong> ${pass}<br>
                                     </p>
                                     <p>
-                                        Looking forward to see you around in ADlook, feel free to <a href="mailto:support@adlook.me">contact us</a> in case you need help with your account.
+                                        Looking forward to see you around in ADlook.me, feel free to <a href="mailto:support@adlook.me">contact us</a> in case you need help with your account.
                                     </p>
                                 </td>
                             </tr>
@@ -456,7 +456,7 @@ https://ads.adlook.me/vast?id=${vastId}`
                             <tr>
                                 <td colspan="3" width="600" cellspacing="10" align="center" cellpadding="5">
                                     <h2>Thanks for working with us!</h2>
-                                    <h3>ADlook Team</h3>
+                                    <h3>ADlook.me Team</h3>
                                 </td>
                             </tr>
                         </tbody></table>
